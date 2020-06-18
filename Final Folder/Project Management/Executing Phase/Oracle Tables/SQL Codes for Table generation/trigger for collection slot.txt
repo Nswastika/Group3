@@ -1,0 +1,48 @@
+CREATE OR REPLACE TRIGGER  "TRG_SLOT" 
+BEFORE INSERT
+ON collection_slot
+FOR EACH ROW
+
+
+DECLARE
+val1 number;
+val2 number;
+val3 number;
+
+BEGIN
+SELECT COUNT(*) SLOT
+INTO val1
+FROM collection_slot WHERE SLOT LIKE '10 AM To 1 PM%';
+
+SELECT COUNT(*) SLOT
+INTO val2
+FROM collection_slot WHERE SLOT LIKE '1 PM To 4 PM%';
+
+SELECT COUNT(*) SLOT
+INTO val3
+FROM collection_slot WHERE SLOT LIKE '4 PM To 7 PM%';
+
+
+IF( val1 < 20) THEN
+/*Nested-if l */
+    DBMS_OUTPUT.PUT_LINE('You Have Successfully Reserved a Collection Slot'); 
+    IF( val2 <= 20) THEN
+    DBMS_OUTPUT.PUT_LINE('You Have Successfully Reserved a Collection Slot'); 
+    ELSE
+    DBMS_OUTPUT.PUT_LINE('Collection Slots Have Already Been Reserved');
+    Raise_Application_Error (-20343, 'All Collection Slots Have Already Been Reserved');
+    END IF;
+ELSE
+/*Nested-if2 */
+    IF( val3 < 20) THEN
+    DBMS_OUTPUT.PUT_LINE('You Have Successfully Reserved a Collection Slot'); 
+    ELSE
+    DBMS_OUTPUT.PUT_LINE('Collection Slots Have Already Been Reserved');
+    Raise_Application_Error (-20343, 'All Collection Slots Have Already Been Reserved');
+    END IF;
+END IF;
+END;
+
+/
+ALTER TRIGGER  "TRG_SLOT" ENABLE
+/

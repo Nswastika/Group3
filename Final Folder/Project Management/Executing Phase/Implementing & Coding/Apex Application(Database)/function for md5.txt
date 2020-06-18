@@ -1,0 +1,6 @@
+create or replace FUNCTION GetMD5(pstring IN VARCHAR2) RETURN VARCHAR2 IS
+hasil VARCHAR2(32) := '';
+BEGIN
+    hasil := DBMS_OBFUSCATION_TOOLKIT.md5(input => UTL_I18N.STRING_TO_RAW (pstring , 'AL32UTF8'));
+    RETURN hasil;
+END GetMD5;
